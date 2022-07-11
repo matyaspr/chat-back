@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Server</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+</head>
+
+<body class="container">
+
+    <h1 class="mt-5">
+        Mini chat
+    </h1>
+    
+    <hr>
+
+    
+    <form id="miFormulario">
+        <div class="row">
+            
+            <div class="col-8">
+                <input  type="text" 
+                        class="form-control" 
+                        id="miMensaje" 
+                        placeholder="Escribe tu mensaje"
+                >
+
+            </div>
+
+            <div class="col-4">
+                <button
+                    type="submit" 
+                    class="btn btn-primary">
+                        Enviar
+                </button>
+            </div>
+
+        </div>
+    </form>
+    
+
+    <div class="row">
+        <div class="col">
+            <ul id="misMensajes">
+
+            </ul>
+        </div>
+    </div>    
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" 
+            integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer">
+    </script>
+    
+    <script>
+        
+        // Conexión con el socket server
+        const socket = io('https://socket-server-mnp.herokuapp.com/');
+
+        //Referencias a elementos del dom
+        const formulario   = document.getElementById('miFormulario');
+        const inputMensaje = document.getElementById('miMensaje');
+        const divMensajes  = document.getElementById('misMensajes');
+
+        formulario.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            console.log({ texto: inputMensaje.value })
+            // Enviar mensaje al servidor
+            socket.emit('message-to-server', { texto: inputMensaje.value });
+            inputMensaje.value = '';
+            inputMensaje.focus();
+        });
+
+        /// Para emitir
+        // socket.emit('mensaje-to-server', { data });
+        
+        // Para escuchar
+        socket.on('mensaje-from-server', (data) => {
+            console.log(data);
+            divMensajes.innerHTML += `<li>${data.texto}</li>`;
+        });
+        
+
+    </script>
+    
+</body>
+</html>
