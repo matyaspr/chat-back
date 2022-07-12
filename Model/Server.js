@@ -9,6 +9,7 @@ const { dbConnection } = require('../Database/Config');
 
 
 
+
 // clase para inicializar el server y configurar los sockets
 class Server {
 
@@ -31,6 +32,8 @@ class Server {
         this.app.use( express.static( path.resolve( __dirname, '../Public') ) )
 
         this.app.use( cors() );
+
+        this.app.use( '/api/login', require('../Router/Auth') );
     }
 
 
