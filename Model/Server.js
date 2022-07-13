@@ -33,7 +33,11 @@ class Server {
 
         this.app.use( cors() );
 
+        // parsear el body de las peticiones
+        this.app.use( express.json() );
+
         this.app.use( '/api/login', require('../Router/Auth') );
+        this.app.use( '/api/message', require('../Router/Message') );
     }
 
 

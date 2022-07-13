@@ -3,34 +3,40 @@
     http://localhost:8080/api/login
 
 */
-
-
 const { Router } = require('express');
+const { check } = require('express-validator');
+const { login, newUser, renewToken } = require('../Controller/AuthController');
+const { validationFields, validateJWT } = require('../Middlewares/index');
 const router = Router();
 
-router.post( '/', async (req, res) => {
-    res.json({
-        message: 'Login',
-        status: 'success'
-    });
-});
 
 
-router.post('/new', async (req, res) => {
 
-    res.json({
-        message: 'New user',
-        status: 'success'
-    });
-});
+router.post('/',
+            [
+                check('email', 'El email es obligatorio').isEmail() ,
+                check('password', 'El password es obligatorio').not().isEmpty(),
+                validationFields
+            ], 
+            login );
 
-// revalidar tokent
-router.get('/revalidate', async (req, res) => {
-    res.json({
-        message: 'Revalidate token',
-        status: 'success'
-    });
-});
+router.post('/new', 
+            [
+                check('name', 'El nombre es obligatorio').not().isEmpty(),
+                check('email', 'El email es obligatorio').isEmail() ,
+                check('password', 'El password es obligatorio').not().isEmpty(),
+                validationFields
+            ],    
+            newUser );
+
+router.get('/revalidate',
+            validateJWT,
+            renewToken );
+
+
+
+
+
 
 
 
