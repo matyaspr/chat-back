@@ -17,11 +17,11 @@ const getChat = async (req = request, res = response) => {
             { from: messageFrom, to: originId }
         ]
     })
-    .sort({ createdAt: 'desc' })
+    .sort({ createdAt: 'asc' })
     .limit(LAST_MESSAGE_LIMIT);
 
     res.json({
-        status: "success",
+        status: true,
         message: lastMessages
     });
 }

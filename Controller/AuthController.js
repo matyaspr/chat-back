@@ -13,7 +13,7 @@ const login = async (req = request, res = response ) => {
         if (!user) {
             return res.status(404).json({
                 message: "El usuario no existe",
-                status: "error"
+                status: false
             });
         }
 
@@ -22,7 +22,7 @@ const login = async (req = request, res = response ) => {
         if (!validPassword) {
             return res.status(400).json({
                 message: "El password es incorrecto",
-                status: "error"
+                status: false
             });
         }
 
@@ -31,7 +31,7 @@ const login = async (req = request, res = response ) => {
 
         res.json({
             message: "El usuario se ha autenticado correctamente",
-            status: "success",
+            status: true,
             token,
             user
         });
@@ -39,7 +39,7 @@ const login = async (req = request, res = response ) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            status: "error",
+            status: false,
             message: error.message,
         });
     }
@@ -54,7 +54,7 @@ const newUser = async (req, res = response ) => {
         if (existEmail) {
             return res.status(400).json({
                 message: 'El email ya existe',
-                status: 'error'
+                status: false
             });
         }
         const user = new User( req.body );
@@ -67,7 +67,7 @@ const newUser = async (req, res = response ) => {
 
         res.json({
             message: 'Usuario creado',
-            status: 'success',
+            status: true,
             user,
             token
         });
@@ -75,7 +75,7 @@ const newUser = async (req, res = response ) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            status: 'error',
+            status: false,
             message: error.message,
         });
     }
@@ -93,7 +93,7 @@ const newUser = async (req, res = response ) => {
     
     res.json({
         message: 'Revalidate token',
-        status: 'success',
+        status: true,
         user,
         token
     });
