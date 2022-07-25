@@ -10,7 +10,7 @@ const validationFields = (req, res, next) => {
         return res.status(404)
                   .json({
                     message: err.mapped(),
-                    status: 'error'
+                    status: false
                 });
     }
 
